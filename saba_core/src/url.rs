@@ -49,14 +49,18 @@ impl Url {
 
     // host文字列を返す
     fn extract_host(&self) -> String {
-        // http:// で始まる部分を取り除き、最初の / までの部分を分割
+        /**
+         * 1. trim_start_matchesで先頭からhttp://を削除
+         * 2. splitnで"/"を区切り文字とし、最大で2つに分割
+         * 3. collect()でsplitnの返すイテレーターをベクター変換している
+         */
         let url_parts: Vec<&str> = self
             .url
             .trim_start_matches("http://")
             .splitn(2, "/")
             .collect();
 
-        // ホストにポート番号を含むか : を使用し判定し返却
+        // ホストにポート番号を含むか":"を使用し判定し
         if let Some(index) = url_parts[0].find(':') {
             url_parts[0][..index].to_string()
         } else {
