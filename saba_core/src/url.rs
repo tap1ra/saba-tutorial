@@ -22,6 +22,10 @@ impl Url {
         }
     }
 
+    // &mutはRustにおける可変参照を示すシンタックス
+    // - 通常の参照（&）は値を変更できませんが、&mut を使えば可能
+    // - &mut は借用先を排他的に操作できる参照を作る
+    // Result<Self, String> とは、成功時はimpl Urlの構造体cloneを、失敗時はエラー文字列を返すことを表す
     pub fn parse(&mut self) -> Result<Self, String> {
         if !self.is_http() {
             return Err("Only HTTP scheme is supported.".to_string());
@@ -35,6 +39,7 @@ impl Url {
         Ok(self.clone())
     }
 
+    // &selfをselfにしてしまうとselfの所有権がis_http関数に移動してしまい、その後の関数でselfが使用できなくなる
     fn is_http(&self) -> bool {
         if self.url.contains("http://") {
             return true;
