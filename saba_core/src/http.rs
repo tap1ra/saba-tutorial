@@ -28,7 +28,7 @@ impl Header {
 
 impl HttpResponse {
     pub fn new(raw_response: String) -> Result<Self, Error> {
-        let preprocessed_response = raw_response.trim_start().replace("\n\r", "\n");
+        let preprocessed_response = raw_response.trim_start().replace("\r\n", "\n");
 
         let (status_line, remaining) = match preprocessed_response.split_once('\n') {
             Some((s, r)) => (s, r),
@@ -40,7 +40,7 @@ impl HttpResponse {
             }
         };
 
-        let (headers, body) = match remaining.split_once("\n\\n") {
+        let (headers, body) = match remaining.split_once("\n\n") {
             Some((h, b)) => {
                 let mut headers = Vec::new();
                 for header in h.split('\n') {
@@ -48,7 +48,7 @@ impl HttpResponse {
                     headers.push(Header::new(
                         String::from(splitted_header[0].trim()),
                         String::from(splitted_header[1].trim()),
-                    ))
+                    ));
                 }
                 (headers, b)
             }
@@ -65,7 +65,7 @@ impl HttpResponse {
             body: body.to_string(),
         })
     }
-
+    
     pub fn version(&self) -> String {
         self.version.clone()
     }
