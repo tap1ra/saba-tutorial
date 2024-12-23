@@ -4,7 +4,23 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = ["saba_core"]
+members = [ "net/wasabi","saba_core"]
+
+# Rustプロジェクトにおける条件付きコンパイルや依存家系切り替えの機能
+# 以下の場合、defaultでwasabiを使い、wasabiの依存関係が定義されている
+[features]
+default = ["wasabi"]
+wasabi = [ "dep:net_wasabi", "dep:noli"]
+
+# 実行可能バイナリの定義
+# sabaというバイナリを主つりょ臆する
+# main関数へのパスがsrc/main.rsとなっている
+[[bin]]
+name = "saba"
+path = "src/main.rs"
+required-features = ["wasabi"]
 
 [dependencies]
-noli = { git = "https://github.com/hikalium/wasabi.git", branch = "for_saba" }
+saba_core = { path ="./saba_core" }
+net_wasabi = { path = "./net/wasabi", optional = true }
+noli = { git = "https://github.com/hikalium/wasabi.git", branch = "for_saba", optional = true }
