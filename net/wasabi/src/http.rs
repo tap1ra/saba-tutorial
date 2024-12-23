@@ -1,12 +1,13 @@
 extern crate alloc;
-use alloc::string::String;
-use saba_core::error::Error;
-use saba_core::http::HttpResponse;
 use alloc::format;
-use crate::alloc::string::ToString;
+use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec::Vec;
 use noli::net::lookup_host;
 use noli::net::SocketAddr;
-use alloc::vec::Vec;
+use noli::net::TcpStream;
+use saba_core::error::Error;
+use saba_core::http::HttpResponse;
 pub struct HttpClient {}
 
 impl HttpClient {
