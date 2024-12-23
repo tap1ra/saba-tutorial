@@ -9,8 +9,8 @@ use noli::prelude::*;
 
 fn main() -> u64 {
     let client = HttpClient::new();
-    // テストに使えるドメインに変更する
-    match client.get("hogefuganotfound.foobardomain".to_string(), 80, "/".to_string()) {
+    // $ python3 -m http.server 8000 でサーバ起動
+    match client.get("host.test".to_string(), 8000, "/test.html".to_string()) {
         Ok(res) => {
             print!("response:\n{:#?}", res);
         }
