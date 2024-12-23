@@ -30,6 +30,7 @@ impl HttpResponse {
     pub fn new(raw_response: String) -> Result<Self, Error> {
         let preprocessed_response = raw_response.trim_start().replace("\r\n", "\n");
 
+        // split_onceがOption型を返し、結果に応じて分岐してる
         let (status_line, remaining) = match preprocessed_response.split_once('\n') {
             Some((s, r)) => (s, r),
             None => {
@@ -65,7 +66,7 @@ impl HttpResponse {
             body: body.to_string(),
         })
     }
-    
+
     pub fn version(&self) -> String {
         self.version.clone()
     }

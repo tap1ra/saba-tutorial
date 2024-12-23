@@ -1,5 +1,6 @@
-#![no_std]
+#![no_std] // 標準ライブラリを使わない
 
+// allocクレートを利用
 extern crate alloc;
 
 pub mod error;
