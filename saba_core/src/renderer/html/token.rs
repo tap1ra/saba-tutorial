@@ -107,15 +107,15 @@ impl HtmlTokenizer {
 
     fn append_tag_name(&mut self, c: char) {
         assert!(self.latest_token.is_some());
-
+    
         if let Some(t) = self.latest_token.as_mut() {
             match t {
                 HtmlToken::StartTag {
-                    ref mut tag,
+                    tag,
                     self_closing: _,
                     attributes: _,
                 }
-                | HtmlToken::EndTag { ref mut tag } => tag.push(c),
+                | HtmlToken::EndTag { tag } => tag.push(c),
                 _ => panic!("`latest_token` should be either StartTag or EndTag"),
             }
         }
@@ -139,31 +139,30 @@ impl HtmlTokenizer {
                 HtmlToken::StartTag {
                     tag: _,
                     self_closing: _,
-                    ref mut attributes,
+                    attributes,
                 } => {
                     attributes.push(Attribute::new());
                 }
-                _ => panic!("`latest_token` should be either StartTag"),
+                _ => panic!("`latest_token` should be StartTag"),
             }
         }
     }
-
+    
     fn append_attribute(&mut self, c: char, is_name: bool) {
         assert!(self.latest_token.is_some());
 
         if let Some(t) = self.latest_token.as_mut() {
             match t {
                 HtmlToken::StartTag {
-                    tag: _,
-                    self_closing: _,
-                    ref mut attributes,
+                    attributes,
+                    ..
                 } => {
                     let len = attributes.len();
                     assert!(len > 0);
 
                     attributes[len - 1].add_char(c, is_name);
                 }
-                _ => panic!("`latest_token` should be either StartTag"),
+                _ => panic!("`latest_token` should be StartTag"),
             }
         }
     }
@@ -174,14 +173,14 @@ impl HtmlTokenizer {
         if let Some(t) = self.latest_token.as_mut() {
             match t {
                 HtmlToken::StartTag {
-                    tag: _,
-                    ref mut self_closing,
-                    attributes: _,
+                    self_closing,
+                    ..
                 } => *self_closing = true,
-                _ => panic!("`latest_token` should be either StartTag"),
+                _ => panic!("`latest_token` should be StartTag"),
             }
         }
     }
+
 }
 impl Iterator for HtmlTokenizer {
     type Item = HtmlToken;
