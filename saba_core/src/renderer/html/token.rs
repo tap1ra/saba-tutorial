@@ -185,6 +185,7 @@ impl HtmlTokenizer {
 
 // Iteratorトレイトを使用しステートマシンを実装する
 impl Iterator for HtmlTokenizer {
+    // Iteratorトレイトの関連型ItemにHtmlTokenを紐づけている
     type Item = HtmlToken;
 
     fn next(&mut self) -> Option<Self::Item> {
