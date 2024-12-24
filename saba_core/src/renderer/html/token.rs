@@ -147,7 +147,7 @@ impl HtmlTokenizer {
             }
         }
     }
-    
+
     fn append_attribute(&mut self, c: char, is_name: bool) {
         assert!(self.latest_token.is_some());
 
@@ -182,6 +182,8 @@ impl HtmlTokenizer {
     }
 
 }
+
+// Iteratorトレイトを使用しステートマシンを実装する
 impl Iterator for HtmlTokenizer {
     type Item = HtmlToken;
 
