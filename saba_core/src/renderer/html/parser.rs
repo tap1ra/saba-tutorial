@@ -30,7 +30,15 @@ impl HtmlParser {
 
         while token.is_some() {
             match self.mode {
-                InsertionMode::Initial => {}
+                InsertionMode::Initial => {
+                    if let Some(HtmlToken::Char(_)) = token {
+                        token = self.t.next();
+                        continue;
+                    }
+
+                    self.mode = InsertionMode::BeforeHtml;
+                    continue;
+                }
                 InsertionMode::BeforeHtml => {}
                 InsertionMode::BeforeHead => {}
                 InsertionMode::InHead => {}
